@@ -7,7 +7,24 @@ val commonSettings = Seq(
 )
 
 lazy val publishSettings = Seq(
-  publishMavenStyle := true
+  publishMavenStyle := true,
+  homepage := Some(url("https://github.com/example/example-library")),
+  licenses := Seq("Apache 3.0" -> url("http://www.apache.org/licenses/LICENSE-3.0")),
+  publishArtifact in Test := false,
+  pomIncludeRepository := { _ => false },
+  publishTo in ThisBuild := {
+    val nexus = "https://oss.sonatype.org/"
+    if (isSnapshot.value)
+      Some("snapshots" at nexus + "content/repositories/snapshots")
+    else
+      Some("releases"  at nexus + "service/local/staging/deploy/maven2")
+  },
+  scmInfo := Some(
+    ScmInfo(
+      url("https://github.com/eugeniyk/api-counters"),
+      "scm:git:git@github.com:eugeniyk/api-counters.git"
+    )
+  )
 )
 
 lazy val noPublishSettings = Seq(
