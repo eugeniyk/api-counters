@@ -9,7 +9,6 @@ val commonSettings = Seq(
 lazy val publishSettings = Seq(
   publishMavenStyle := true,
   homepage := Some(url("https://github.com/example/example-library")),
-  licenses := Seq("Apache 3.0" -> url("http://www.apache.org/licenses/LICENSE-3.0")),
   publishArtifact in Test := false,
   pomIncludeRepository := { _ => false },
   publishTo in ThisBuild := {
@@ -24,7 +23,13 @@ lazy val publishSettings = Seq(
       url("https://github.com/eugeniyk/api-counters"),
       "scm:git:git@github.com:eugeniyk/api-counters.git"
     )
-  )
+  ),
+  developers := List(Developer("eugeniyk",
+    "Eugene Kalashnikov",
+    "keatrance@gmail.com",
+    url("https://github.com/username"))),
+
+  licenses := Seq("GPLv3" -> url("https://opensource.org/licenses/GPL-3.0")),
 )
 
 lazy val noPublishSettings = Seq(
