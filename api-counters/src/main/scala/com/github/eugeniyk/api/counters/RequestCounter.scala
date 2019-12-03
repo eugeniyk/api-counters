@@ -8,13 +8,13 @@ object RequestCounter {
   /**
    * @param totalRequestSubmitted total number of requests that gatekeeper received, from the last report
    * @param rejectedRequests number of requests that gatekeeper ignored, from the last report
-   * @param inFlightRequests current number of requests being proceeded
+   * @param inflightRequests current number of requests being proceeded
    * @param successResponses success responses count, from the last report
    * @param failureResponses failure responses count, from the last report
    */
   case class RequestCounterStats(totalRequestSubmitted: Long,
                                  rejectedRequests: Long,
-                                 inFlightRequests: Long,
+                                 inflightRequests: Long,
                                  successResponses: Long,
                                  failureResponses: Long,
                                  currentRPS: Int) {
@@ -60,6 +60,19 @@ class RequestCounter() {
 
   def inflightRequests: Int = inflightCounter.intValue()
   def rps: Int = rpsCounter.getRPS
+
+  /**
+   * @return get [[RequestCounterStats]] statistic
+   */
+  def getStats: RequestCounterStats = {
+    val total = totalCounter.sum()
+    val rejected = rejectRequestCounter.sum()
+    val inflightRequests = inflightCounter.sum()
+    val successResponses = successResponseCounter.sum()
+    val failedResponses = failureResponseCounter.sum()
+
+    RequestCounterStats(total, rejected, inflightRequests, successResponses, failedResponses, rpsCounter.getRPS)
+  }
 
   /**
    * @return get [[RequestCounterStats]] statistic
