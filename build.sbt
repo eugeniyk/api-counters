@@ -8,15 +8,13 @@ val commonSettings = Seq(
 
 lazy val publishSettings = Seq(
   publishMavenStyle := true,
-  homepage := Some(url("https://github.com/example/example-library")),
+  homepage := Some(url("https://github.com/eugeniyk/api-counters")),
   publishArtifact in Test := false,
   pomIncludeRepository := { _ => false },
-  publishTo in ThisBuild := {
+  publishTo := {
     val nexus = "https://oss.sonatype.org/"
-    if (isSnapshot.value)
-      Some("snapshots" at nexus + "content/repositories/snapshots")
-    else
-      Some("releases"  at nexus + "service/local/staging/deploy/maven2")
+    if (isSnapshot.value) Some("snapshots" at nexus + "content/repositories/snapshots")
+    else Some("releases" at nexus + "service/local/staging/deploy/maven2")
   },
   scmInfo := Some(
     ScmInfo(
@@ -29,13 +27,14 @@ lazy val publishSettings = Seq(
     "keatrance@gmail.com",
     url("https://github.com/username"))),
 
-  licenses := Seq("GPLv3" -> url("https://opensource.org/licenses/GPL-3.0")),
+  licenses := Seq("GPLv3" -> url("https://opensource.org/licenses/GPL-3.0"))
 )
 
 lazy val noPublishSettings = Seq(
   publish := {},
   publishLocal := {},
-  publishArtifact := false
+  publishArtifact := false,
+  publishTo := Some(Resolver.file("Unused transient repository", file("target/unusedrepo"))) // http://stackoverflow.com/a/18522706
 )
 
 lazy val apiCounters = project.in(file("api-counters"))
