@@ -30,20 +30,27 @@ object RequestCounter {
 class RequestCounter() {
   private val totalCounter: LongAdder = new LongAdder()
 
-  private val rejectRequestCounter: LongAdder = new LongAdder()
   private val inflightCounter: LongAdder = new LongAdder()
+  private val rejectRequestCounter: LongAdder = new LongAdder()
   private val successResponseCounter: LongAdder = new LongAdder()
   private val failureResponseCounter: LongAdder = new LongAdder()
 
   private val rpsCounter: RPSCounter = new SlidingWindowRPSCounter()
 
-  def registerRequest(): Unit = {
+  /**
+   * Register request that we accept
+   */
+  def registerAcceptedRequest(): Unit = {
     rpsCounter.registerRequest()
     totalCounter.increment()
     inflightCounter.increment()
   }
 
-  def rejectRequest(): Unit = {
+  /**
+   * Register request that we reject
+   */
+  def registerRejectedRequest(): Unit = {
+    rpsCounter.registerRequest()
     totalCounter.increment()
     rejectRequestCounter.increment()
   }

@@ -21,7 +21,7 @@ class RequestCounterBenchmark {
   @Benchmark
   @Group("requestCounter")
   def registerRequest(state: TestState) = {
-    state.requestCounter.registerRequest()
+    state.requestCounter.registerAcceptedRequest()
   }
 
   @Benchmark
