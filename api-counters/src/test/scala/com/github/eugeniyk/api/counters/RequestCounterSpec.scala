@@ -20,11 +20,14 @@ class RequestCounterSpec extends Specification {
         }
       }
 
+      val expectedRejected = total / 10
+
       //  assume everything with 1 sec
-      counter.rps should_== total
+      counter.incomingRPS should_== total
+      counter.acceptedRPS should_== total - expectedRejected
+      counter.rejectedRPS should_== expectedRejected
       counter.inflightRequests should_== 0
 
-      val expectedRejected = total / 10
       val expectFailure = total / 5 - expectedRejected
 
       counter.getStats should_== RequestCounterStats(
@@ -33,7 +36,8 @@ class RequestCounterSpec extends Specification {
         inflightRequests = 0,
         successResponses = total - expectFailure - expectedRejected,
         failureResponses = expectFailure,
-        currentRPS = total
+        rejectedRPS = expectedRejected,
+        acceptedRPS = total - expectedRejected
       )
     }
   }

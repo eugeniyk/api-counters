@@ -10,14 +10,18 @@ object RequestCounter {
    * @param rejectedRequests number of requests that gatekeeper ignored, from the last report
    * @param inflightRequests current number of requests being proceeded
    * @param successResponses success responses count, from the last report
-   * @param failureResponses failure responses count, from the last report
+   * @param rejectedRPS number of incoming requests for last second
+   * @param acceptedRPS number of processing requests for last second
    */
   case class RequestCounterStats(totalRequestSubmitted: Long,
                                  rejectedRequests: Long,
                                  inflightRequests: Long,
                                  successResponses: Long,
                                  failureResponses: Long,
-                                 currentRPS: Int) {
+                                 acceptedRPS: Int,
+                                 rejectedRPS: Int) {
+    def incomingRPS: Int = acceptedRPS + rejectedRPS
+
     /** processed (allowed to pass) to total request ratio; ratio = (total-rejected)/total */
     def processedRatio: Double = if (totalRequestSubmitted > 0) (totalRequestSubmitted - rejectedRequests) / totalRequestSubmitted.toDouble else 1
 
@@ -69,9 +73,11 @@ class RequestCounter() {
   def inflightRequests: Int = inflightCounter.intValue()
 
   /** Returns request per second stats for all incoming requests including rejected one */
-  def incomingRPS: Int = acceptRpsCounter.getRPS + rejectRpsCounter.getRPS
+  def incomingRPS: Int = acceptedRPS + rejectedRPS
   /** Returns request per second stats for only accepted requests, without rejected one */
-  def processingRPS: Int = acceptRpsCounter.getRPS
+  def acceptedRPS: Int = acceptRpsCounter.getRPS
+  /** Returns request per second stats for only rejected requests */
+  def rejectedRPS: Int = rejectRpsCounter.getRPS
 
   /**
    * @return get [[RequestCounterStats]] statistic
@@ -83,7 +89,14 @@ class RequestCounter() {
     val successResponses = successResponseCounter.sum()
     val failedResponses = failureResponseCounter.sum()
 
-    RequestCounterStats(total, rejected, inflightRequests, successResponses, failedResponses, acceptRpsCounter.getRPS)
+    RequestCounterStats(
+      totalRequestSubmitted = total,
+      rejectedRequests = rejected,
+      inflightRequests = inflightRequests,
+      successResponses = successResponses,
+      failureResponses = failedResponses,
+      acceptedRPS = acceptedRPS,
+      rejectedRPS = rejectedRPS)
   }
 
   /**
@@ -97,6 +110,6 @@ class RequestCounter() {
     val successResponses = successResponseCounter.sumThenReset()
     val failedResponses = failureResponseCounter.sumThenReset()
 
-    RequestCounterStats(total, rejected, inflightRequests, successResponses, failedResponses, acceptRpsCounter.getRPS)
+    RequestCounterStats(total, rejected, inflightRequests, successResponses, failedResponses, acceptedRPS, rejectedRPS)
   }
 }
