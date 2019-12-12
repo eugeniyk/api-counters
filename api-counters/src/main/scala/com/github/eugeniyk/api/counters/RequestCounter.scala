@@ -35,13 +35,14 @@ class RequestCounter() {
   private val successResponseCounter: LongAdder = new LongAdder()
   private val failureResponseCounter: LongAdder = new LongAdder()
 
-  private val rpsCounter: RPSCounter = new SlidingWindowRPSCounter()
+  private val acceptRpsCounter: RPSCounter = new SlidingWindowRPSCounter()
+  private val rejectRpsCounter: RPSCounter = new SlidingWindowRPSCounter()
 
   /**
    * Register request that we accept
    */
   def registerAcceptedRequest(): Unit = {
-    rpsCounter.registerRequest()
+    acceptRpsCounter.registerRequest()
     totalCounter.increment()
     inflightCounter.increment()
   }
@@ -50,7 +51,7 @@ class RequestCounter() {
    * Register request that we reject
    */
   def registerRejectedRequest(): Unit = {
-    rpsCounter.registerRequest()
+    rejectRpsCounter.registerRequest()
     totalCounter.increment()
     rejectRequestCounter.increment()
   }
@@ -66,7 +67,11 @@ class RequestCounter() {
   }
 
   def inflightRequests: Int = inflightCounter.intValue()
-  def rps: Int = rpsCounter.getRPS
+
+  /** Returns request per second stats for all incoming requests including rejected one */
+  def incomingRPS: Int = acceptRpsCounter.getRPS + rejectRpsCounter.getRPS
+  /** Returns request per second stats for only accepted requests, without rejected one */
+  def processingRPS: Int = acceptRpsCounter.getRPS
 
   /**
    * @return get [[RequestCounterStats]] statistic
@@ -78,7 +83,7 @@ class RequestCounter() {
     val successResponses = successResponseCounter.sum()
     val failedResponses = failureResponseCounter.sum()
 
-    RequestCounterStats(total, rejected, inflightRequests, successResponses, failedResponses, rpsCounter.getRPS)
+    RequestCounterStats(total, rejected, inflightRequests, successResponses, failedResponses, acceptRpsCounter.getRPS)
   }
 
   /**
@@ -92,6 +97,6 @@ class RequestCounter() {
     val successResponses = successResponseCounter.sumThenReset()
     val failedResponses = failureResponseCounter.sumThenReset()
 
-    RequestCounterStats(total, rejected, inflightRequests, successResponses, failedResponses, rpsCounter.getRPS)
+    RequestCounterStats(total, rejected, inflightRequests, successResponses, failedResponses, acceptRpsCounter.getRPS)
   }
 }

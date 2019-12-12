@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.1 - 2019-12-12
+
+### Added
+- separate incoming vs processing RPS counter
+
 ## 0.3.0 - 2019-12-11
 
 ### Changed
