@@ -39,8 +39,8 @@ class RequestCounter() {
   private val successResponseCounter: LongAdder = new LongAdder()
   private val failureResponseCounter: LongAdder = new LongAdder()
 
-  private val acceptRpsCounter: RPSCounter = new SlidingWindowRPSCounter()
-  private val rejectRpsCounter: RPSCounter = new SlidingWindowRPSCounter()
+  private val acceptRpsCounter: RPSCounter = RPSCounter()
+  private val rejectRpsCounter: RPSCounter = RPSCounter()
 
   /**
    * Register request that we accept

@@ -1,5 +1,12 @@
 package com.github.eugeniyk.api.counters
 
+object RPSCounter {
+  /**
+   * Instantiate default implementation of [[RPSCounter]] - [[SlidingWindowRPSCounter]]
+   */
+  def apply(): RPSCounter = new SlidingWindowRPSCounter()
+}
+
 /**
   * Requests per second counter
   */

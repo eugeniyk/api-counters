@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.2 - 2019-12-12
+
+### Added
+- RPS counter factory method
+
 ## 0.3.1 - 2019-12-12
 
 ### Added
