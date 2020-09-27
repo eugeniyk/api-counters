@@ -4,16 +4,16 @@ Note: the baselines below I've got by running JMH benchmarks on my 8core Mac
 
 ### PRSCountersBenchmark
 
-`sbt "performance/jmh:run -i 10 -wi 5 -f1 -t16 PRSCountersBenchmark"`:
+`sbt "performance/jmh:run -i 7 -wi 3 -f1 PRSCountersBenchmark"`:
 
 | Benchmark                                                                   | Mode | Cnt |   Score  |  Error  | Units |
 |-----------------------------------------------------------------------------|------|-----|----------|---------|-------|
-| PRSCountersBenchmark\.LastSecondBucket                                      | avgt | 10  | 218\.128 | 52\.965 | ns/op |
-| PRSCountersBenchmark\.LastSecondBucket:lastSecondBucketRPSCounterGetRPS     | avgt | 10  | 321\.294 | 80\.202 | ns/op |
-| PRSCountersBenchmark\.LastSecondBucket:lastSecondBucketRPSCounterRegister   | avgt | 10  | 114\.962 | 25\.787 | ns/op |
-| PRSCountersBenchmark\.SlidingWindow                                         | avgt | 10  | 66\.142  | 1\.414  | ns/op |
-| PRSCountersBenchmark\.SlidingWindow:slidingWindowCounterGetRPS              | avgt | 10  | 42\.742  | 0\.943  | ns/op |
-| PRSCountersBenchmark\.SlidingWindow:slidingWindowCounterRegister            | avgt | 10  | 89\.543  | 1\.887  | ns/op |
+| PRSCountersBenchmark\.LastSecondBucket                                      | avgt | 10  | 124\.530 | 9\.199  | ns/op |
+| PRSCountersBenchmark\.LastSecondBucket:lastSecondBucketRPSCounterGetRPS     | avgt | 10  | 153\.001 | 11\.379 | ns/op |
+| PRSCountersBenchmark\.LastSecondBucket:lastSecondBucketRPSCounterRegister   | avgt | 10  | 96\.060  | 7\.934  | ns/op |
+| PRSCountersBenchmark\.SlidingWindow                                         | avgt | 10  | 70\.598  | 7\.099  | ns/op |
+| PRSCountersBenchmark\.SlidingWindow:slidingWindowCounterGetRPS              | avgt | 10  | 43\.707  | 4\.414  | ns/op |
+| PRSCountersBenchmark\.SlidingWindow:slidingWindowCounterRegister            | avgt | 10  | 97\.489  | 9\.785  | ns/op |
 
 ### RequestCounterBenchmark
 

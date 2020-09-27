@@ -14,31 +14,35 @@ object PRSCountersBenchmark {
 }
 
 /**
- * sbt "performance/jmh:run -i 10 -wi 5 -f1 -t8 PRSCountersBenchmark"
+ * sbt "performance/jmh:run -i 7 -wi 3 -f1 PRSCountersBenchmark"
  */
 @BenchmarkMode(Array(Mode.AverageTime))
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 class PRSCountersBenchmark {
   @Benchmark
   @Group("LastSecondBucket")
+  @GroupThreads(4)
   def lastSecondBucketRPSCounterRegister(state: TestState) = {
     state.lastSecondCounter.registerRequest()
   }
 
   @Benchmark
   @Group("LastSecondBucket")
+  @GroupThreads(4)
   def lastSecondBucketRPSCounterGetRPS(state: TestState) = {
     state.lastSecondCounter.getRPS
   }
 
   @Benchmark
   @Group("SlidingWindow")
+  @GroupThreads(4)
   def slidingWindowCounterRegister(state: TestState) = {
     state.slidingWindowCounter.registerRequest()
   }
 
   @Benchmark
   @Group("SlidingWindow")
+  @GroupThreads(4)
   def slidingWindowCounterGetRPS(state: TestState) = {
     state.slidingWindowCounter.getRPS
   }
