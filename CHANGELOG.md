@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.3 - 2021-02-23
+
+### Added
+- support for scala 2.13.x
+
 ## 0.3.2 - 2019-12-12
 
 ### Added

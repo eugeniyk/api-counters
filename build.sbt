@@ -1,8 +1,8 @@
 name := "api-counters-root"
 
 val commonSettings = Seq(
-  scalaVersion := "2.12.10",
-  crossScalaVersions := Seq(scalaVersion.value, "2.11.12"),
+  scalaVersion := "2.13.5",
+  crossScalaVersions := Seq(scalaVersion.value, "2.12.12", "2.11.12"),
   organization := "com.github.eugeniyk"
 )
 
